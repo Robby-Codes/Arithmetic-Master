@@ -56,7 +56,7 @@ def custom_deci(deci):
         if (re.match(r'^[0-9]+$', deci) and
                 not re.match(r'^0+[1-9]+$', deci) and
                 int(deci) <= 14):
-            result = True 
+            result = True
     if result:
         data['deci_error'] = False
         pickle.dump(data, open('storage.dat', 'wb'))
@@ -119,7 +119,8 @@ def prepare_data(key=False, min_=None, max_=None, deci=None, neg=None):
 
 
 def answer(user_ans, problem):
-    if re.match(r'^-?[0-9]+\.?[0-9]*$', user_ans):
+    if (re.match(r'^-?[0-9]+\.?[0-9]*$', user_ans) and
+            not re.match(r'^There', problem)):
         if eval(user_ans) == eval(problem.replace('\n', '')):
             return True
     else:

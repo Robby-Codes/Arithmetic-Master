@@ -20,10 +20,7 @@ WindowManager:
             text: '+'
             font_size: 400
             color: (0, 0, 0, 30)
-            background_color: (10, 2, 0, 30)
-            on_press:
-            on_press: addition.background_color = (1, 1, 1, 30)
-            on_touch_up: addition.background_color = (10, 2, 0, 30) 
+            background_color: (10, 2, 0, 30) if addition.state == 'normal' else (1, 1, 1, 30)
             on_release:
                 app.root.current = 'addscreen'
                 root.manager.transition.direction = 'down'
@@ -33,27 +30,24 @@ WindowManager:
             text: '-'
             font_size: 600
             color: (0, 0, 0, 30)
-            background_color: (10, 2, 0, 30)
-            on_press: subtraction.background_color = (1, 1, 1, 30)
-            on_touch_up: subtraction.background_color = (10, 2, 0, 30)
+            background_color: (10, 2, 0, 30) if subtraction.state == 'normal' else (1, 1, 1, 30)
+            on_release:
+                app.root.current = 'subtractionscreen'
+                root.manager.transition.direction = 'down'
 
         Button:
             id: multiplication
             text: 'x'
             font_size: 300
             color: (0, 0, 0, 30)
-            background_color: (10, 2, 0, 30)
-            on_press: multiplication.background_color = (1, 1, 1, 30)
-            on_touch_up: multiplication.background_color = (10, 2, 0, 30)
+            background_color: (10, 2, 0, 30) if multiplication.state == 'normal' else (1, 1, 1, 30)
 
         Button:
             id: division
             text: '/'
             font_size: 220
             color: (1, 80, 0, 30)
-            background_color: (0, 0, 0, 30)
-            on_press: division.background_color = (1, 1, 1, 30)
-            on_touch_up: division.background_color = (0, 0, 0, 30)
+            background_color: (0, 0, 0, 30) if division.state == 'normal' else (1, 1, 1, 30)
 
 
 <AdditionScreen>:
@@ -138,7 +132,118 @@ WindowManager:
                         add_max.text = '100'
                         add_deci.text = '0'
                         add_negs.active = False
+                        add_answer.text = ''
+
+
+<SubtractionScreen>:
+    name: 'subtractionscreen'
+
+    FloatLayout:
+        
+        Label:
+            color: 0.2, 0.5, 0, 1
+            canvas:
+                Color:
+                    rgb: [1, 0, 0, 0.1]
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            size_hint: 0.5, 0.1
+            pos_hint: {'top': 1}
+
+        Label: 
+            text: 'Addition'
+            size_hint: 0.5, 0.1
+            pos_hint: {'top': 1}
+            
 
 
 
-                
+
+
+
+        Label:
+            text: 'Min'
+            size_hint: 0.2, 0.1
+            pos_hint: {'top': 0.9}
+
+        TextInput:
+            id: add_min
+            multiline: False
+            text: '0'
+            size_hint: 0.1, 0.1
+            pos_hint: {'top': 0.9, 'x': 0.2}
+            on_text:
+                addproblem.text = func.prepare_data(min_=int(add_min.text)) if add_min.text != '' and func.custom_min(min_=add_min.text) else func.error_message()
+
+        Label:
+            text: 'Max'
+            size_hint: 0.2, 0.1
+            pos_hint: {'top': 0.9, 'x': 0.5}
+
+        TextInput:
+            id: add_max
+            multiline: False
+            text: '100'
+            size_hint: 0.2, 0.1
+            pos_hint: {'top': 0.9, 'x': 0.8}
+            on_text:
+                addproblem.text = func.prepare_data(max_=int(add_max.text)) if add_max.text != '' and func.custom_max(max_=add_max.text) else func.error_message()
+        
+        Label:
+            text: 'Decimals'
+            size_hint: 0.2, 0.1
+            pos_hint: {'top': 0.8}
+
+        TextInput:
+            id: add_deci
+            multiline: False
+            text: '0'
+            size_hint: 0.2, 0.1
+            pos_hint: {'top': 0.8, 'x': 0.2}
+            on_text: 
+                addproblem.text = func.prepare_data(deci=int(add_deci.text)) if add_deci.text != '' and func.custom_deci(deci=add_deci.text) else func.error_message()
+            
+        Label:
+            text: 'Negatives'
+            size_hint: 0.2, 0.1
+            pos_hint: {'top': 0.8, 'x': 0.5}
+
+        CheckBox:
+            id: add_negs
+            size_hint: 0.2, 0.1
+            pos_hint: {'top': 0.8, 'x': 0.8}
+            on_active:
+                addproblem.text = func.prepare_data(neg=add_negs.active)
+        
+        Label:
+            id: addproblem
+            text: func.prepare_data(True)
+            size_hint: 0.2, 0.1
+            pos_hint: {'top': 0.5, 'x': 0.5}
+        
+        TextInput:
+            id: add_answer
+            multiline: False
+            size_hint: 0.2, 0.1
+            pos_hint: {'top': 0.3, 'x': 0.5}
+            on_text:
+                addproblem.text, add_answer.text = func.prepare_data() if func.answer(user_ans=add_answer.text, problem=addproblem.text) and add_answer.text != '' else addproblem.text, '' if func.answer(user_ans=add_answer.text, problem=addproblem.text) else add_answer.text
+
+        Button:
+            id: back_btn
+            text: 'Back' if back_btn.state == 'normal' else 'what?'
+            font_size: 10
+            color: 0.3, 0.6, 0.7, 1
+            size_hint: 0.1, 0.1
+            pos_hint: {'x': 0}
+            on_release:
+                app.root.current = 'homescreen'
+                root.manager.transition.direction = 'up'
+                addproblem.text = func.prepare_data(True, 0, 100, 0, False)
+                add_min.text = '0'
+                add_max.text = '100'
+                add_deci.text = '0'
+                add_negs.active = False
+                add_answer.text = ''
+
