@@ -7,11 +7,11 @@ def error_message():
     data = pickle.load(open('storage.dat', 'rb'))
     message = ''
     if data['min_error'] is True:
-        message += "There is an Error in your custom 'Min' input\n"
+        message += "    Min Error\n"
     if data['max_error'] is True:
-        message += "There is an Error in your custom 'Max' input\n"
+        message += "    Max Error\n"
     if data['deci_error'] is True:
-        message += "There is an Error in your custom 'Deci' input"
+        message += " Decimal Error"
     return message
 
 
@@ -19,14 +19,16 @@ def custom_min(min_):
     data = pickle.load(open('storage.dat', 'rb'))
     result = False
     if (re.match(r'^[0-9]+$', min_) and
-            not re.match(r'^0+[1-9]+$', min_) and
+            not re.match(r'^0[0-9]+', min_) and
             int(min_) <= data['max_data']):
         result = True
     if result:
+        data['max_error'] = False
         data['min_error'] = False
         pickle.dump(data, open('storage.dat', 'wb'))
         return True
     else:
+        data['min_data'] = int(min_)
         data['min_error'] = True
         pickle.dump(data, open('storage.dat', 'wb'))
         return False
@@ -36,14 +38,16 @@ def custom_max(max_):
     data = pickle.load(open('storage.dat', 'rb'))
     result = False
     if (re.match(r'^[0-9]+$', max_) and
-            not re.match(r'^0+[1-9]+$', max_) and
+            not re.match(r'^0[0-9]+', max_) and
             int(max_) >= data['min_data']):
         result = True
     if result:
+        data['min_error'] = False
         data['max_error'] = False
         pickle.dump(data, open('storage.dat', 'wb'))
         return True
     else:
+        data['max_data'] = int(max_)
         data['max_error'] = True
         pickle.dump(data, open('storage.dat', 'wb'))
         return False
@@ -54,8 +58,7 @@ def custom_deci(deci):
     result = False
     if deci is not None:
         if (re.match(r'^[0-9]+$', deci) and
-                not re.match(r'^0+[1-9]+$', deci) and
-                int(deci) <= 14):
+                not re.match(r'^0[0-9]+', deci)):
             result = True
     if result:
         data['deci_error'] = False
@@ -80,7 +83,18 @@ def create_neg(num):
     return -num if chance == 1 else num
 
 
-def begin_adding(data_set):
+def show_problem(num1, num2, num3, num4, type_):
+    if type_ == '+':
+        return '   ' + str(num1) + num3 + '\n+ ' + str(num2) + num4
+    if type_ == '-':
+        return '   ' + str(num1) + num3 + '\n- ' + str(num2) + num4
+    if type_ == '*':
+        return '   ' + str(num1) + num3 + '\nx ' + str(num2) + num4
+    if type_ == '//':
+        return '   ' + str(num1) + num3 + '\n/ ' + str(num2) + num4
+
+
+def form_problem(data_set, type_):
     if (data_set['min_error'] is True or
             data_set['max_error'] is True or
             data_set['deci_error'] is True):
@@ -95,10 +109,11 @@ def begin_adding(data_set):
     if data_set['neg_data']:
         num1 = create_neg(num1)
         num2 = create_neg(num2)
-    return '   ' + str(num1) + num3 + '\n+ ' + str(num2) + num4
+    return show_problem(num1, num2, num3, num4, type_)
 
 
-def prepare_data(key=False, min_=None, max_=None, deci=None, neg=None):
+def prepare_data(key=False, min_=None, max_=None,
+                 deci=None, neg=None, type_=None):
     if key is True:
         data = dict(
             min_data=0, max_data=100, deci_data=0, neg_data=False,
@@ -115,7 +130,7 @@ def prepare_data(key=False, min_=None, max_=None, deci=None, neg=None):
         if neg is not None:
             data['neg_data'] = neg
         pickle.dump(data, open('storage.dat', 'wb'))
-    return begin_adding(data)
+    return form_problem(data, type_)
 
 
 def answer(user_ans, problem):

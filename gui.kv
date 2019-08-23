@@ -32,7 +32,7 @@ WindowManager:
             color: (0, 0, 0, 30)
             background_color: (10, 2, 0, 30) if subtraction.state == 'normal' else (1, 1, 1, 30)
             on_release:
-                app.root.current = 'subtractionscreen'
+                app.root.current = 'subscreen'
                 root.manager.transition.direction = 'down'
 
         Button:
@@ -41,6 +41,9 @@ WindowManager:
             font_size: 300
             color: (0, 0, 0, 30)
             background_color: (10, 2, 0, 30) if multiplication.state == 'normal' else (1, 1, 1, 30)
+            on_release:
+                app.root.current = 'mulscreen'
+                root.manager.transition.direction = 'up'
 
         Button:
             id: division
@@ -48,202 +51,825 @@ WindowManager:
             font_size: 220
             color: (1, 80, 0, 30)
             background_color: (0, 0, 0, 30) if division.state == 'normal' else (1, 1, 1, 30)
+            on_release:
+                app.root.current = 'divscreen'
+                root.manager.transition.direction = 'up'
 
 
 <AdditionScreen>:
     name: 'addscreen'
 
-    GridLayout:
-        cols: 1
-
-        Label:
-            text: 'Addition'
-
-        GridLayout:
-            cols: 4
-
-            Label:
-                text: 'Min'
-
-            TextInput:
-                id: add_min
-                multiline: False
-                text: '0'
-                on_text:
-                    addproblem.text = func.prepare_data(min_=int(add_min.text)) if add_min.text != '' and func.custom_min(min_=add_min.text) else func.error_message()
-
-            Label:
-                text: 'Max'
-
-            TextInput:
-                id: add_max
-                multiline: False
-                text: '100'
-                on_text:
-                    addproblem.text = func.prepare_data(max_=int(add_max.text)) if add_max.text != '' and func.custom_max(max_=add_max.text) else func.error_message()
-            
-            Label:
-                text: 'Decimals'
-
-            TextInput:
-                id: add_deci
-                multiline: False
-                text: '0'
-                on_text: 
-                    addproblem.text = func.prepare_data(deci=int(add_deci.text)) if add_deci.text != '' and func.custom_deci(deci=add_deci.text) else func.error_message()
-                
-            Label:
-                text: 'Negatives'
-
-            CheckBox:
-                id: add_negs
-                on_active:
-                    addproblem.text = func.prepare_data(neg=add_negs.active)
-        
-        Label:
-            id: addproblem
-            text: func.prepare_data(True)
-
-        GridLayout:
-            cols: 3
-
-            Label:
-                text: ''
-            
-            TextInput:
-                id: add_answer
-                multiline: False
-                on_text:
-                    addproblem.text, add_answer.text = func.prepare_data() if func.answer(user_ans=add_answer.text, problem=addproblem.text) and add_answer.text != '' else addproblem.text, '' if func.answer(user_ans=add_answer.text, problem=addproblem.text) else add_answer.text
-
-            Label:
-                text: ''
-            
-            GridLayout:
-                cols: 5
-
-                Button:
-                    text: 'Back'
-                    on_release:
-                        app.root.current = 'homescreen'
-                        root.manager.transition.direction = 'up'
-                        addproblem.text = func.prepare_data(True, 0, 100, 0, False)
-                        add_min.text = '0'
-                        add_max.text = '100'
-                        add_deci.text = '0'
-                        add_negs.active = False
-                        add_answer.text = ''
-
-
-<SubtractionScreen>:
-    name: 'subtractionscreen'
-
     FloatLayout:
         
         Label:
-            color: 0.2, 0.5, 0, 1
             canvas:
                 Color:
-                    rgb: [1, 0, 0, 0.1]
+                    rgb: 1, 0.5, 0, 1
                 Rectangle:
                     pos: self.pos
                     size: self.size
-            size_hint: 0.5, 0.1
+            size_hint: 1, 0.04
             pos_hint: {'top': 1}
-
-        Label: 
-            text: 'Addition'
-            size_hint: 0.5, 0.1
-            pos_hint: {'top': 1}
-            
-
-
-
-
-
 
         Label:
-            text: 'Min'
-            size_hint: 0.2, 0.1
-            pos_hint: {'top': 0.9}
+            canvas:
+                Color:
+                    rgb: 0, 0, 0, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            size_hint: 1, 0.13
+            pos_hint: {'top': 0.96}
+
+        Label:
+            canvas:
+                Color:
+                    rgb: 0.3, 0.3, 0.3, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            size_hint: 1, 0.83
+            pos_hint: {'top': 0.83}
+
+        Label:
+            canvas:
+                Color:
+                    rgb: 0.8, 0.8, 0.8, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            size_hint: 0.02, 0.03
+            pos_hint: {'top': 0.88, 'x': 0.69}
+
+        Label:
+            canvas:
+                Color:
+                    rgb: 0.2, 0.2, 0.2, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            size_hint: 0.3, 0.83
+            pos_hint: {'x': 0}
+
+        Label:
+            canvas:
+                Color:
+                    rgb: 0.2, 0.2, 0.2, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            size_hint: 0.3, 0.83
+            pos_hint: {'x': 0.7}
+
+        Label:
+            canvas:
+                Color:
+                    rgb: 0, 0, 0, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            size_hint: 1, 0.1
+            pos_hint: {'x': 0}
+
+        Label: 
+            text: 'Addition Training'
+            font_size: 20
+            color: 0, 0, 0, 1
+            size_hint: 1, 0.04
+            text_size: self.size
+            halign: 'left'
+            valign: 'bottom'
+            pos_hint: {'top': 1}
+
+        Label:
+            text: 'Minimum'
+            size_hint: 0.1, 0.05
+            pos_hint: {'top': 0.95, 'x': 0.04}
 
         TextInput:
             id: add_min
             multiline: False
             text: '0'
-            size_hint: 0.1, 0.1
-            pos_hint: {'top': 0.9, 'x': 0.2}
+            size_hint: 0.3, 0.05
+            pos_hint: {'top': 0.95, 'x': 0.19}
             on_text:
-                addproblem.text = func.prepare_data(min_=int(add_min.text)) if add_min.text != '' and func.custom_min(min_=add_min.text) else func.error_message()
+                addproblem.text = func.prepare_data(min_=int(add_min.text), type_='+') if func.custom_min(min_=add_min.text) else func.error_message()
 
         Label:
-            text: 'Max'
-            size_hint: 0.2, 0.1
-            pos_hint: {'top': 0.9, 'x': 0.5}
+            text: 'Maximum'
+            size_hint: 0.1, 0.05
+            pos_hint: {'top': 0.95, 'x': 0.54}
 
         TextInput:
             id: add_max
             multiline: False
             text: '100'
-            size_hint: 0.2, 0.1
-            pos_hint: {'top': 0.9, 'x': 0.8}
+            size_hint: 0.3, 0.05
+            pos_hint: {'top': 0.95, 'x': 0.69}
             on_text:
-                addproblem.text = func.prepare_data(max_=int(add_max.text)) if add_max.text != '' and func.custom_max(max_=add_max.text) else func.error_message()
+                addproblem.text = func.prepare_data(max_=int(add_max.text), type_='+') if func.custom_max(max_=add_max.text) else func.error_message()
         
         Label:
             text: 'Decimals'
-            size_hint: 0.2, 0.1
-            pos_hint: {'top': 0.8}
+            size_hint: 0.1, 0.05
+            pos_hint: {'top': 0.89, 'x': 0.04}
 
         TextInput:
             id: add_deci
             multiline: False
             text: '0'
-            size_hint: 0.2, 0.1
-            pos_hint: {'top': 0.8, 'x': 0.2}
+            size_hint: 0.3, 0.05
+            pos_hint: {'top': 0.89, 'x': 0.19}
             on_text: 
-                addproblem.text = func.prepare_data(deci=int(add_deci.text)) if add_deci.text != '' and func.custom_deci(deci=add_deci.text) else func.error_message()
+                addproblem.text = func.prepare_data(deci=int(add_deci.text), type_='+') if func.custom_deci(deci=add_deci.text) else func.error_message()
             
         Label:
             text: 'Negatives'
-            size_hint: 0.2, 0.1
-            pos_hint: {'top': 0.8, 'x': 0.5}
+            size_hint: 0.1, 0.05
+            pos_hint: {'top': 0.89, 'x': 0.54}
 
         CheckBox:
             id: add_negs
-            size_hint: 0.2, 0.1
-            pos_hint: {'top': 0.8, 'x': 0.8}
+            size_hint: 0.02, 0.03
+            pos_hint: {'top': 0.88, 'x': 0.69}
             on_active:
-                addproblem.text = func.prepare_data(neg=add_negs.active)
+                addproblem.text = func.prepare_data(neg=add_negs.active, type_='+')
         
         Label:
             id: addproblem
-            text: func.prepare_data(True)
-            size_hint: 0.2, 0.1
-            pos_hint: {'top': 0.5, 'x': 0.5}
+            text: func.prepare_data(key=True, type_='+')
+            font_size: 50
+            size_hint: 0.4, 0.4
+            pos_hint: {'top': 0.85, 'x': 0.29}
         
         TextInput:
             id: add_answer
             multiline: False
-            size_hint: 0.2, 0.1
-            pos_hint: {'top': 0.3, 'x': 0.5}
+            size_hint: 0.4, 0.15
+            pos_hint: {'top': 0.4, 'x': 0.3}
             on_text:
-                addproblem.text, add_answer.text = func.prepare_data() if func.answer(user_ans=add_answer.text, problem=addproblem.text) and add_answer.text != '' else addproblem.text, '' if func.answer(user_ans=add_answer.text, problem=addproblem.text) else add_answer.text
+                addproblem.text, add_answer.text = func.prepare_data(type_='+') if func.answer(user_ans=add_answer.text, problem=addproblem.text) and add_answer.text != '' else addproblem.text, '' if func.answer(user_ans=add_answer.text, problem=addproblem.text) else add_answer.text
 
         Button:
             id: back_btn
-            text: 'Back' if back_btn.state == 'normal' else 'what?'
-            font_size: 10
-            color: 0.3, 0.6, 0.7, 1
+            text: 'Home'
+            color: 0, 0, 0, 1
+            background_color: (10, 2, 0, 30) if back_btn.state == 'normal' else (1, 1, 1, 30)
             size_hint: 0.1, 0.1
             pos_hint: {'x': 0}
             on_release:
                 app.root.current = 'homescreen'
                 root.manager.transition.direction = 'up'
-                addproblem.text = func.prepare_data(True, 0, 100, 0, False)
+                addproblem.text = func.prepare_data(True, 0, 100, 0, False, type_='+')
                 add_min.text = '0'
                 add_max.text = '100'
                 add_deci.text = '0'
                 add_negs.active = False
                 add_answer.text = ''
 
+        Button:
+            id: fast_sub
+            text: '-'
+            font_size: 50
+            color: 0, 0, 0, 1
+            background_color: (10, 2, 0, 30) if fast_sub.state == 'normal' else (1, 1, 1, 30)
+            size_hint: 0.1, 0.1
+            pos_hint: {'x': 0.7}
+            on_release:
+                app.root.current = 'subscreen'
+
+        Button:
+            id: fast_mult
+            text: 'x'
+            font_size: 30
+            color: 0, 0, 0, 1
+            background_color: (10, 2, 0, 30) if fast_mult.state == 'normal' else (1, 1, 1, 30)
+            size_hint: 0.1, 0.1
+            pos_hint: {'x': 0.8}
+            on_release:
+                app.root.current = 'mulscreen'
+
+        Button:
+            id: fast_divi
+            text: '/'
+            font_size: 30
+            color: 0, 0, 0, 1
+            background_color: (10, 2, 0, 30) if fast_divi.state == 'normal' else (1, 1, 1, 30)
+            size_hint: 0.1, 0.1
+            pos_hint: {'x': 0.9}
+            on_release:
+                app.root.current = 'divscreen'
+
+
+<SubtractionScreen>:
+    name: 'subscreen'
+
+    FloatLayout:
+        
+        Label:
+            canvas:
+                Color:
+                    rgb: 1, 0.5, 0, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            size_hint: 1, 0.04
+            pos_hint: {'top': 1}
+
+        Label:
+            canvas:
+                Color:
+                    rgb: 0, 0, 0, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            size_hint: 1, 0.13
+            pos_hint: {'top': 0.96}
+
+        Label:
+            canvas:
+                Color:
+                    rgb: 0.3, 0.3, 0.3, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            size_hint: 1, 0.83
+            pos_hint: {'top': 0.83}
+
+        Label:
+            canvas:
+                Color:
+                    rgb: 0.8, 0.8, 0.8, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            size_hint: 0.02, 0.03
+            pos_hint: {'top': 0.88, 'x': 0.69}
+
+        Label:
+            canvas:
+                Color:
+                    rgb: 0.2, 0.2, 0.2, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            size_hint: 0.3, 0.83
+            pos_hint: {'x': 0}
+
+        Label:
+            canvas:
+                Color:
+                    rgb: 0.2, 0.2, 0.2, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            size_hint: 0.3, 0.83
+            pos_hint: {'x': 0.7}
+
+        Label:
+            canvas:
+                Color:
+                    rgb: 0, 0, 0, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            size_hint: 1, 0.1
+            pos_hint: {'x': 0}
+
+        Label: 
+            text: 'Subtraction Training'
+            font_size: 20
+            color: 0, 0, 0, 1
+            size_hint: 1, 0.04
+            text_size: self.size
+            halign: 'left'
+            valign: 'bottom'
+            pos_hint: {'top': 1}
+
+        Label:
+            text: 'Minimum'
+            size_hint: 0.1, 0.05
+            pos_hint: {'top': 0.95, 'x': 0.04}
+
+        TextInput:
+            id: add_min
+            multiline: False
+            text: '0'
+            size_hint: 0.3, 0.05
+            pos_hint: {'top': 0.95, 'x': 0.19}
+            on_text:
+                addproblem.text = func.prepare_data(min_=int(add_min.text), type_='-') if func.custom_min(min_=add_min.text) else func.error_message()
+
+        Label:
+            text: 'Maximum'
+            size_hint: 0.1, 0.05
+            pos_hint: {'top': 0.95, 'x': 0.54}
+
+        TextInput:
+            id: add_max
+            multiline: False
+            text: '100'
+            size_hint: 0.3, 0.05
+            pos_hint: {'top': 0.95, 'x': 0.69}
+            on_text:
+                addproblem.text = func.prepare_data(max_=int(add_max.text), type_='-') if func.custom_max(max_=add_max.text) else func.error_message()
+        
+        Label:
+            text: 'Decimals'
+            size_hint: 0.1, 0.05
+            pos_hint: {'top': 0.89, 'x': 0.04}
+
+        TextInput:
+            id: add_deci
+            multiline: False
+            text: '0'
+            size_hint: 0.3, 0.05
+            pos_hint: {'top': 0.89, 'x': 0.19}
+            on_text: 
+                addproblem.text = func.prepare_data(deci=int(add_deci.text), type_='-') if func.custom_deci(deci=add_deci.text) else func.error_message()
+            
+        Label:
+            text: 'Negatives'
+            size_hint: 0.1, 0.05
+            pos_hint: {'top': 0.89, 'x': 0.54}
+
+        CheckBox:
+            id: add_negs
+            size_hint: 0.02, 0.03
+            pos_hint: {'top': 0.88, 'x': 0.69}
+            on_active:
+                addproblem.text = func.prepare_data(neg=add_negs.active, type_='-')
+        
+        Label:
+            id: addproblem
+            text: func.prepare_data(key=True, type_='-')
+            font_size: 50
+            size_hint: 0.4, 0.4
+            pos_hint: {'top': 0.85, 'x': 0.29}
+        
+        TextInput:
+            id: add_answer
+            multiline: False
+            size_hint: 0.4, 0.15
+            pos_hint: {'top': 0.4, 'x': 0.3}
+            on_text:
+                addproblem.text, add_answer.text = func.prepare_data(type_='-') if func.answer(user_ans=add_answer.text, problem=addproblem.text) and add_answer.text != '' else addproblem.text, '' if func.answer(user_ans=add_answer.text, problem=addproblem.text) else add_answer.text
+
+        Button:
+            id: back_btn
+            text: 'Home'
+            color: 0, 0, 0, 1
+            background_color: (10, 2, 0, 30) if back_btn.state == 'normal' else (1, 1, 1, 30)
+            size_hint: 0.1, 0.1
+            pos_hint: {'x': 0}
+            on_release:
+                app.root.current = 'homescreen'
+                root.manager.transition.direction = 'up'
+                addproblem.text = func.prepare_data(True, 0, 100, 0, False, type_='-')
+                add_min.text = '0'
+                add_max.text = '100'
+                add_deci.text = '0'
+                add_negs.active = False
+                add_answer.text = ''
+
+        Button:
+            id: fast_add
+            text: '+'
+            font_size: 40
+            color: 0, 0, 0, 1
+            background_color: (10, 2, 0, 30) if fast_add.state == 'normal' else (1, 1, 1, 30)
+            size_hint: 0.1, 0.1
+            pos_hint: {'x': 0.7}
+            on_release:
+                app.root.current = 'addscreen'
+
+        Button:
+            id: fast_mult
+            text: 'x'
+            font_size: 30
+            color: 0, 0, 0, 1
+            background_color: (10, 2, 0, 30) if fast_mult.state == 'normal' else (1, 1, 1, 30)
+            size_hint: 0.1, 0.1
+            pos_hint: {'x': 0.8}
+            on_release:
+                app.root.current = 'mulscreen'
+
+        Button:
+            id: fast_divi
+            text: '/'
+            font_size: 30
+            color: 0, 0, 0, 1
+            background_color: (10, 2, 0, 30) if fast_divi.state == 'normal' else (1, 1, 1, 30)
+            size_hint: 0.1, 0.1
+            pos_hint: {'x': 0.9}
+            on_release:
+                app.root.current = 'divscreen'
+
+<MultiplicationScreen>:
+    name: 'mulscreen'
+
+    FloatLayout:
+        
+        Label:
+            canvas:
+                Color:
+                    rgb: 1, 0.5, 0, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            size_hint: 1, 0.04
+            pos_hint: {'top': 1}
+
+        Label:
+            canvas:
+                Color:
+                    rgb: 0, 0, 0, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            size_hint: 1, 0.13
+            pos_hint: {'top': 0.96}
+
+        Label:
+            canvas:
+                Color:
+                    rgb: 0.3, 0.3, 0.3, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            size_hint: 1, 0.83
+            pos_hint: {'top': 0.83}
+
+        Label:
+            canvas:
+                Color:
+                    rgb: 0.8, 0.8, 0.8, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            size_hint: 0.02, 0.03
+            pos_hint: {'top': 0.88, 'x': 0.69}
+
+        Label:
+            canvas:
+                Color:
+                    rgb: 0.2, 0.2, 0.2, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            size_hint: 0.3, 0.83
+            pos_hint: {'x': 0}
+
+        Label:
+            canvas:
+                Color:
+                    rgb: 0.2, 0.2, 0.2, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            size_hint: 0.3, 0.83
+            pos_hint: {'x': 0.7}
+
+        Label:
+            canvas:
+                Color:
+                    rgb: 0, 0, 0, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            size_hint: 1, 0.1
+            pos_hint: {'x': 0}
+
+        Label: 
+            text: 'Multiplication Training'
+            font_size: 20
+            color: 0, 0, 0, 1
+            size_hint: 1, 0.04
+            text_size: self.size
+            halign: 'left'
+            valign: 'bottom'
+            pos_hint: {'top': 1}
+
+        Label:
+            text: 'Minimum'
+            size_hint: 0.1, 0.05
+            pos_hint: {'top': 0.95, 'x': 0.04}
+
+        TextInput:
+            id: add_min
+            multiline: False
+            text: '0'
+            size_hint: 0.3, 0.05
+            pos_hint: {'top': 0.95, 'x': 0.19}
+            on_text:
+                addproblem.text = func.prepare_data(min_=int(add_min.text), type_='*') if func.custom_min(min_=add_min.text) else func.error_message()
+
+        Label:
+            text: 'Maximum'
+            size_hint: 0.1, 0.05
+            pos_hint: {'top': 0.95, 'x': 0.54}
+
+        TextInput:
+            id: add_max
+            multiline: False
+            text: '100'
+            size_hint: 0.3, 0.05
+            pos_hint: {'top': 0.95, 'x': 0.69}
+            on_text:
+                addproblem.text = func.prepare_data(max_=int(add_max.text), type_='*') if func.custom_max(max_=add_max.text) else func.error_message()
+        
+        Label:
+            text: 'Decimals'
+            size_hint: 0.1, 0.05
+            pos_hint: {'top': 0.89, 'x': 0.04}
+
+        TextInput:
+            id: add_deci
+            multiline: False
+            text: '0'
+            size_hint: 0.3, 0.05
+            pos_hint: {'top': 0.89, 'x': 0.19}
+            on_text: 
+                addproblem.text = func.prepare_data(deci=int(add_deci.text), type_='*') if func.custom_deci(deci=add_deci.text) else func.error_message()
+            
+        Label:
+            text: 'Negatives'
+            size_hint: 0.1, 0.05
+            pos_hint: {'top': 0.89, 'x': 0.54}
+
+        CheckBox:
+            id: add_negs
+            size_hint: 0.02, 0.03
+            pos_hint: {'top': 0.88, 'x': 0.69}
+            on_active:
+                addproblem.text = func.prepare_data(neg=add_negs.active, type_='*')
+        
+        Label:
+            id: addproblem
+            text: func.prepare_data(key=True, type_='*')
+            font_size: 50
+            size_hint: 0.4, 0.4
+            pos_hint: {'top': 0.85, 'x': 0.29}
+        
+        TextInput:
+            id: add_answer
+            multiline: False
+            size_hint: 0.4, 0.15
+            pos_hint: {'top': 0.4, 'x': 0.3}
+            on_text:
+                addproblem.text, add_answer.text = func.prepare_data(type_='*') if func.answer(user_ans=add_answer.text, problem=addproblem.text) and add_answer.text != '' else addproblem.text, '' if func.answer(user_ans=add_answer.text, problem=addproblem.text) else add_answer.text
+
+        Button:
+            id: back_btn
+            text: 'Home'
+            color: 0, 0, 0, 1
+            background_color: (10, 2, 0, 30) if back_btn.state == 'normal' else (1, 1, 1, 30)
+            size_hint: 0.1, 0.1
+            pos_hint: {'x': 0}
+            on_release:
+                app.root.current = 'homescreen'
+                root.manager.transition.direction = 'down'
+                addproblem.text = func.prepare_data(True, 0, 100, 0, False, type_='*')
+                add_min.text = '0'
+                add_max.text = '100'
+                add_deci.text = '0'
+                add_negs.active = False
+                add_answer.text = ''
+
+        Button:
+            id: fast_add
+            text: '+'
+            font_size: 40
+            color: 0, 0, 0, 1
+            background_color: (10, 2, 0, 30) if fast_add.state == 'normal' else (1, 1, 1, 30)
+            size_hint: 0.1, 0.1
+            pos_hint: {'x': 0.7}
+            on_release:
+                app.root.current = 'addscreen'
+
+        Button:
+            id: fast_sub
+            text: '-'
+            font_size: 30
+            color: 0, 0, 0, 1
+            background_color: (10, 2, 0, 30) if fast_sub.state == 'normal' else (1, 1, 1, 30)
+            size_hint: 0.1, 0.1
+            pos_hint: {'x': 0.8}
+            on_release:
+                app.root.current = 'subscreen'
+
+        Button:
+            id: fast_divi
+            text: '/'
+            font_size: 30
+            color: 0, 0, 0, 1
+            background_color: (10, 2, 0, 30) if fast_divi.state == 'normal' else (1, 1, 1, 30)
+            size_hint: 0.1, 0.1
+            pos_hint: {'x': 0.9}
+            on_release:
+                app.root.current = 'divscreen'
+
+
+<DivisionScreen>:
+    name: 'divscreen'
+
+    FloatLayout:
+        
+        Label:
+            canvas:
+                Color:
+                    rgb: 1, 0.5, 0, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            size_hint: 1, 0.04
+            pos_hint: {'top': 1}
+
+        Label:
+            canvas:
+                Color:
+                    rgb: 0, 0, 0, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            size_hint: 1, 0.13
+            pos_hint: {'top': 0.96}
+
+        Label:
+            canvas:
+                Color:
+                    rgb: 0.3, 0.3, 0.3, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            size_hint: 1, 0.83
+            pos_hint: {'top': 0.83}
+
+        Label:
+            canvas:
+                Color:
+                    rgb: 0.8, 0.8, 0.8, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            size_hint: 0.02, 0.03
+            pos_hint: {'top': 0.88, 'x': 0.69}
+
+        Label:
+            canvas:
+                Color:
+                    rgb: 0.2, 0.2, 0.2, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            size_hint: 0.3, 0.83
+            pos_hint: {'x': 0}
+
+        Label:
+            canvas:
+                Color:
+                    rgb: 0.2, 0.2, 0.2, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            size_hint: 0.3, 0.83
+            pos_hint: {'x': 0.7}
+
+        Label:
+            canvas:
+                Color:
+                    rgb: 0, 0, 0, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            size_hint: 1, 0.1
+            pos_hint: {'x': 0}
+
+        Label: 
+            text: 'Division Training'
+            font_size: 20
+            color: 0, 0, 0, 1
+            size_hint: 1, 0.04
+            text_size: self.size
+            halign: 'left'
+            valign: 'bottom'
+            pos_hint: {'top': 1}
+
+        Label:
+            text: 'Minimum'
+            size_hint: 0.1, 0.05
+            pos_hint: {'top': 0.95, 'x': 0.04}
+
+        TextInput:
+            id: add_min
+            multiline: False
+            text: '0'
+            size_hint: 0.3, 0.05
+            pos_hint: {'top': 0.95, 'x': 0.19}
+            on_text:
+                addproblem.text = func.prepare_data(min_=int(add_min.text), type_='//') if func.custom_min(min_=add_min.text) else func.error_message()
+
+        Label:
+            text: 'Maximum'
+            size_hint: 0.1, 0.05
+            pos_hint: {'top': 0.95, 'x': 0.54}
+
+        TextInput:
+            id: add_max
+            multiline: False
+            text: '100'
+            size_hint: 0.3, 0.05
+            pos_hint: {'top': 0.95, 'x': 0.69}
+            on_text:
+                addproblem.text = func.prepare_data(max_=int(add_max.text), type_='/') if func.custom_max(max_=add_max.text) else func.error_message()
+        
+        Label:
+            text: 'Decimals'
+            size_hint: 0.1, 0.05
+            pos_hint: {'top': 0.89, 'x': 0.04}
+
+        TextInput:
+            id: add_deci
+            multiline: False
+            text: '0'
+            size_hint: 0.3, 0.05
+            pos_hint: {'top': 0.89, 'x': 0.19}
+            on_text: 
+                addproblem.text = func.prepare_data(deci=int(add_deci.text), type_='//') if func.custom_deci(deci=add_deci.text) else func.error_message()
+            
+        Label:
+            text: 'Negatives'
+            size_hint: 0.1, 0.05
+            pos_hint: {'top': 0.89, 'x': 0.54}
+
+        CheckBox:
+            id: add_negs
+            size_hint: 0.02, 0.03
+            pos_hint: {'top': 0.88, 'x': 0.69}
+            on_active:
+                addproblem.text = func.prepare_data(neg=add_negs.active, type_='//')
+        
+        Label:
+            id: addproblem
+            text: func.prepare_data(key=True, type_='//')
+            font_size: 50
+            size_hint: 0.4, 0.4
+            pos_hint: {'top': 0.85, 'x': 0.29}
+        
+        TextInput:
+            id: add_answer
+            multiline: False
+            size_hint: 0.4, 0.15
+            pos_hint: {'top': 0.4, 'x': 0.3}
+            on_text:
+                addproblem.text, add_answer.text = func.prepare_data(type_='//') if func.answer(user_ans=add_answer.text, problem=addproblem.text) and add_answer.text != '' else addproblem.text, '' if func.answer(user_ans=add_answer.text, problem=addproblem.text) else add_answer.text
+
+        Button:
+            id: back_btn
+            text: 'Home'
+            color: 0, 0, 0, 1
+            background_color: (10, 2, 0, 30) if back_btn.state == 'normal' else (1, 1, 1, 30)
+            size_hint: 0.1, 0.1
+            pos_hint: {'x': 0}
+            on_release:
+                app.root.current = 'homescreen'
+                root.manager.transition.direction = 'down'
+                addproblem.text = func.prepare_data(True, 0, 100, 0, False, type_='//')
+                add_min.text = '0'
+                add_max.text = '100'
+                add_deci.text = '0'
+                add_negs.active = False
+                add_answer.text = ''
+
+        Button:
+            id: fast_add
+            text: '+'
+            font_size: 40
+            color: 0, 0, 0, 1
+            background_color: (10, 2, 0, 30) if fast_add.state == 'normal' else (1, 1, 1, 30)
+            size_hint: 0.1, 0.1
+            pos_hint: {'x': 0.7}
+            on_release:
+                app.root.current = 'addscreen'
+
+        Button:
+            id: fast_sub
+            text: '-'
+            font_size: 30
+            color: 0, 0, 0, 1
+            background_color: (10, 2, 0, 30) if fast_sub.state == 'normal' else (1, 1, 1, 30)
+            size_hint: 0.1, 0.1
+            pos_hint: {'x': 0.8}
+            on_release:
+                app.root.current = 'subscreen'
+
+        Button:
+            id: fast_mult
+            text: 'x'
+            font_size: 30
+            color: 0, 0, 0, 1
+            background_color: (10, 2, 0, 30) if fast_mult.state == 'normal' else (1, 1, 1, 30)
+            size_hint: 0.1, 0.1
+            pos_hint: {'x': 0.9}
+            on_release:
+                app.root.current = 'mulscreen'
