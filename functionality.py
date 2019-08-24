@@ -106,7 +106,7 @@ def show_problem(num1, num2, num3, num4, type_):
             else:
                 return '   ' + str(num2) + num3 + '\n- ' + str(num1) + num4
     if type_ == '*':
-        return '   ' + str(num1) + num3 + '\nx ' + str(num2) + num4
+        return '   ' + str(num1) + num3 + '\n* ' + str(num2) + num4
     if type_ == '//':
         return '   ' + str(num1) + num3 + '\n/ ' + str(num2) + num4
 
