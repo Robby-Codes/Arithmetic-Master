@@ -754,6 +754,16 @@ WindowManager:
         Label:
             canvas:
                 Color:
+                    rgb: 0.8, 0.8, 0.8, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            size_hint: 0.02, 0.03
+            pos_hint: {'top': 0.88, 'x': 0.94}
+
+        Label:
+            canvas:
+                Color:
                     rgb: 0.2, 0.2, 0.2, 1
                 Rectangle:
                     pos: self.pos
@@ -844,6 +854,23 @@ WindowManager:
             pos_hint: {'top': 0.88, 'x': 0.69}
             on_active:
                 addproblem.text = func.prepare_data(neg=add_negs.active, type_='//')
+
+        Label:
+            text: 'Integers Only'
+            size_hint: 0.1, 0.05
+            pos_hint: {'top': 0.89, 'x': 0.79}
+
+        CheckBox:
+            id: integersonly
+            size_hint: 0.02, 0.03
+            pos_hint: {'top': 0.88, 'x': 0.94}
+            on_active:
+                addproblem.text = func.prepare_data(neg=integersonly.active, type_='//')
+
+        Label:
+            text: 'Negatives'
+            size_hint: 0.1, 0.05
+            pos_hint: {'top': 0.89, 'x': 0.54}
         
         Label:
             id: addproblem
