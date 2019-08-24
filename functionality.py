@@ -94,10 +94,17 @@ def create_neg(num):
 
 
 def show_problem(num1, num2, num3, num4, type_):
+    data = pickle.load(open('storage.dat', 'rb'))
     if type_ == '+':
         return '   ' + str(num1) + num3 + '\n+ ' + str(num2) + num4
     if type_ == '-':
-        return '   ' + str(num1) + num3 + '\n- ' + str(num2) + num4
+        if data['neg_data'] is True:
+            return '   ' + str(num1) + num3 + '\n- ' + str(num2) + num4
+        else:
+            if (num1 - num2) >= 0:
+                return '   ' + str(num1) + num3 + '\n- ' + str(num2) + num4
+            else:
+                return '   ' + str(num2) + num3 + '\n- ' + str(num1) + num4
     if type_ == '*':
         return '   ' + str(num1) + num3 + '\nx ' + str(num2) + num4
     if type_ == '//':
