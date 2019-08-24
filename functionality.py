@@ -6,10 +6,8 @@ from random import randint
 def error_message():
     data = pickle.load(open('storage.dat', 'rb'))
     message = ''
-    if data['min_error'] is True:
-        message += "    Min Error\n"
-    if data['max_error'] is True:
-        message += "    Max Error\n"
+    if data['min_error'] is True or data['max_error'] is True:
+        message += "Min - Max Error\n"
     if data['deci_error'] is True:
         message += " Decimal Error"
     return message
@@ -18,17 +16,23 @@ def error_message():
 def custom_min(min_):
     data = pickle.load(open('storage.dat', 'rb'))
     result = False
-    if (re.match(r'^[0-9]+$', min_) and
-            not re.match(r'^0[0-9]+', min_) and
-            int(min_) <= data['max_data']):
-        result = True
+    try:
+        if (re.match(r'^[0-9]+$', min_) and
+                not re.match(r'^0[0-9]+', min_) and
+                int(min_) <= data['max_data']):
+            result = True
+    except TypeError:
+        result = False
     if result:
-        data['max_error'] = False
         data['min_error'] = False
+        data['max_error'] = False
         pickle.dump(data, open('storage.dat', 'wb'))
         return True
-    else:
-        data['min_data'] = int(min_)
+    elif not result:
+        try:
+            data['min_data'] = int(min_)
+        except ValueError:
+            data['min_data'] = min_
         data['min_error'] = True
         pickle.dump(data, open('storage.dat', 'wb'))
         return False
@@ -37,17 +41,23 @@ def custom_min(min_):
 def custom_max(max_):
     data = pickle.load(open('storage.dat', 'rb'))
     result = False
-    if (re.match(r'^[0-9]+$', max_) and
-            not re.match(r'^0[0-9]+', max_) and
-            int(max_) >= data['min_data']):
-        result = True
+    try:
+        if (re.match(r'^[0-9]+$', max_) and
+                not re.match(r'^0[0-9]+', max_) and
+                int(max_) >= data['min_data']):
+            result = True
+    except TypeError:
+        result = False
     if result:
-        data['min_error'] = False
         data['max_error'] = False
+        data['min_error'] = False
         pickle.dump(data, open('storage.dat', 'wb'))
         return True
-    else:
-        data['max_data'] = int(max_)
+    elif not result:
+        try:
+            data['max_data'] = int(max_)
+        except ValueError:
+            data['max_data'] = max_
         data['max_error'] = True
         pickle.dump(data, open('storage.dat', 'wb'))
         return False
@@ -64,7 +74,7 @@ def custom_deci(deci):
         data['deci_error'] = False
         pickle.dump(data, open('storage.dat', 'wb'))
         return True
-    else:
+    elif not result:
         data['deci_error'] = True
         pickle.dump(data, open('storage.dat', 'wb'))
         return False

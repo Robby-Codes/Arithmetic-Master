@@ -1,8 +1,10 @@
 #:import func functionality
+#:import NoTransition kivy.uix.screenmanager.NoTransition
 
 
 
 WindowManager:
+    transition: NoTransition()
     HomeScreen:
     AdditionScreen:
     SubtractionScreen:
@@ -23,7 +25,6 @@ WindowManager:
             background_color: (10, 2, 0, 30) if addition.state == 'normal' else (1, 1, 1, 30)
             on_release:
                 app.root.current = 'addscreen'
-                root.manager.transition.direction = 'down'
 
         Button:
             id: subtraction
@@ -33,7 +34,6 @@ WindowManager:
             background_color: (10, 2, 0, 30) if subtraction.state == 'normal' else (1, 1, 1, 30)
             on_release:
                 app.root.current = 'subscreen'
-                root.manager.transition.direction = 'down'
 
         Button:
             id: multiplication
@@ -43,7 +43,6 @@ WindowManager:
             background_color: (10, 2, 0, 30) if multiplication.state == 'normal' else (1, 1, 1, 30)
             on_release:
                 app.root.current = 'mulscreen'
-                root.manager.transition.direction = 'up'
 
         Button:
             id: division
@@ -53,7 +52,6 @@ WindowManager:
             background_color: (0, 0, 0, 30) if division.state == 'normal' else (1, 1, 1, 30)
             on_release:
                 app.root.current = 'divscreen'
-                root.manager.transition.direction = 'up'
 
 
 <AdditionScreen>:
@@ -219,8 +217,6 @@ WindowManager:
             pos_hint: {'x': 0}
             on_release:
                 app.root.current = 'homescreen'
-                root.manager.transition.direction = 'up'
-                addproblem.text = func.prepare_data(True, 0, 100, 0, False, type_='+')
                 add_min.text = '0'
                 add_max.text = '100'
                 add_deci.text = '0'
@@ -237,6 +233,11 @@ WindowManager:
             pos_hint: {'x': 0.7}
             on_release:
                 app.root.current = 'subscreen'
+                add_min.text = '0'
+                add_max.text = '100'
+                add_deci.text = '0'
+                add_negs.active = False
+                add_answer.text = ''
 
         Button:
             id: fast_mult
@@ -248,6 +249,11 @@ WindowManager:
             pos_hint: {'x': 0.8}
             on_release:
                 app.root.current = 'mulscreen'
+                add_min.text = '0'
+                add_max.text = '100'
+                add_deci.text = '0'
+                add_negs.active = False
+                add_answer.text = ''
 
         Button:
             id: fast_divi
@@ -259,7 +265,11 @@ WindowManager:
             pos_hint: {'x': 0.9}
             on_release:
                 app.root.current = 'divscreen'
-
+                add_min.text = '0'
+                add_max.text = '100'
+                add_deci.text = '0'
+                add_negs.active = False
+                add_answer.text = ''
 
 <SubtractionScreen>:
     name: 'subscreen'
@@ -424,8 +434,6 @@ WindowManager:
             pos_hint: {'x': 0}
             on_release:
                 app.root.current = 'homescreen'
-                root.manager.transition.direction = 'up'
-                addproblem.text = func.prepare_data(True, 0, 100, 0, False, type_='-')
                 add_min.text = '0'
                 add_max.text = '100'
                 add_deci.text = '0'
@@ -442,6 +450,11 @@ WindowManager:
             pos_hint: {'x': 0.7}
             on_release:
                 app.root.current = 'addscreen'
+                add_min.text = '0'
+                add_max.text = '100'
+                add_deci.text = '0'
+                add_negs.active = False
+                add_answer.text = ''
 
         Button:
             id: fast_mult
@@ -453,6 +466,11 @@ WindowManager:
             pos_hint: {'x': 0.8}
             on_release:
                 app.root.current = 'mulscreen'
+                add_min.text = '0'
+                add_max.text = '100'
+                add_deci.text = '0'
+                add_negs.active = False
+                add_answer.text = ''
 
         Button:
             id: fast_divi
@@ -464,6 +482,11 @@ WindowManager:
             pos_hint: {'x': 0.9}
             on_release:
                 app.root.current = 'divscreen'
+                add_min.text = '0'
+                add_max.text = '100'
+                add_deci.text = '0'
+                add_negs.active = False
+                add_answer.text = ''
 
 <MultiplicationScreen>:
     name: 'mulscreen'
@@ -628,8 +651,6 @@ WindowManager:
             pos_hint: {'x': 0}
             on_release:
                 app.root.current = 'homescreen'
-                root.manager.transition.direction = 'down'
-                addproblem.text = func.prepare_data(True, 0, 100, 0, False, type_='*')
                 add_min.text = '0'
                 add_max.text = '100'
                 add_deci.text = '0'
@@ -646,6 +667,11 @@ WindowManager:
             pos_hint: {'x': 0.7}
             on_release:
                 app.root.current = 'addscreen'
+                add_min.text = '0'
+                add_max.text = '100'
+                add_deci.text = '0'
+                add_negs.active = False
+                add_answer.text = ''
 
         Button:
             id: fast_sub
@@ -657,6 +683,11 @@ WindowManager:
             pos_hint: {'x': 0.8}
             on_release:
                 app.root.current = 'subscreen'
+                add_min.text = '0'
+                add_max.text = '100'
+                add_deci.text = '0'
+                add_negs.active = False
+                add_answer.text = ''
 
         Button:
             id: fast_divi
@@ -668,6 +699,11 @@ WindowManager:
             pos_hint: {'x': 0.9}
             on_release:
                 app.root.current = 'divscreen'
+                add_min.text = '0'
+                add_max.text = '100'
+                add_deci.text = '0'
+                add_negs.active = False
+                add_answer.text = ''
 
 
 <DivisionScreen>:
@@ -833,8 +869,6 @@ WindowManager:
             pos_hint: {'x': 0}
             on_release:
                 app.root.current = 'homescreen'
-                root.manager.transition.direction = 'down'
-                addproblem.text = func.prepare_data(True, 0, 100, 0, False, type_='//')
                 add_min.text = '0'
                 add_max.text = '100'
                 add_deci.text = '0'
@@ -851,6 +885,11 @@ WindowManager:
             pos_hint: {'x': 0.7}
             on_release:
                 app.root.current = 'addscreen'
+                add_min.text = '0'
+                add_max.text = '100'
+                add_deci.text = '0'
+                add_negs.active = False
+                add_answer.text = ''
 
         Button:
             id: fast_sub
@@ -862,6 +901,11 @@ WindowManager:
             pos_hint: {'x': 0.8}
             on_release:
                 app.root.current = 'subscreen'
+                add_min.text = '0'
+                add_max.text = '100'
+                add_deci.text = '0'
+                add_negs.active = False
+                add_answer.text = ''
 
         Button:
             id: fast_mult
@@ -873,3 +917,8 @@ WindowManager:
             pos_hint: {'x': 0.9}
             on_release:
                 app.root.current = 'mulscreen'
+                add_min.text = '0'
+                add_max.text = '100'
+                add_deci.text = '0'
+                add_negs.active = False
+                add_answer.text = ''
