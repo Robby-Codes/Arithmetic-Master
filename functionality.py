@@ -111,15 +111,20 @@ def show_problem(num1, num2, num3, num4, type_):
         return '   ' + str(num1) + num3 + '\n/ ' + str(num2) + num4
 
 
+def int_only_div_answers(data_set):
+    return 'integer only logic in progress'
+
+
 def form_problem(data_set, type_):
     if (data_set['min_error'] is True or
             data_set['max_error'] is True or
             data_set['deci_error'] is True):
         return error_message()
-    else:
-        num1 = randint(data_set['min_data'], data_set['max_data'])
-        num2 = randint(data_set['min_data'], data_set['max_data'])
-        num3, num4 = '', ''
+    if data_set['intonly'] is True and type_ == '//':
+        return int_only_div_answers(data_set)
+    num1 = randint(data_set['min_data'], data_set['max_data'])
+    num2 = randint(data_set['min_data'], data_set['max_data'])
+    num3, num4 = '', ''
     if data_set['deci_data'] != 0:
         num3 = create_deci(data_set['deci_data'])
         num4 = create_deci(data_set['deci_data'])
@@ -130,11 +135,11 @@ def form_problem(data_set, type_):
 
 
 def prepare_data(key=False, min_=None, max_=None,
-                 deci=None, neg=None, type_=None):
+                 deci=None, neg=None, intonly=None, type_=None):
     if key is True:
         data = dict(
             min_data=0, max_data=100, deci_data=0, neg_data=False,
-            min_error=False, max_error=False, deci_error=False)
+            intonly=True, min_error=False, max_error=False, deci_error=False)
         pickle.dump(data, open('storage.dat', 'wb'))
     else:
         data = pickle.load(open('storage.dat', 'rb'))
@@ -146,6 +151,8 @@ def prepare_data(key=False, min_=None, max_=None,
             data['deci_data'] = deci
         if neg is not None:
             data['neg_data'] = neg
+        if intonly is not None:
+            data['intonly'] = intonly
         pickle.dump(data, open('storage.dat', 'wb'))
     return form_problem(data, type_)
 
