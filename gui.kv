@@ -749,17 +749,7 @@ WindowManager:
                     pos: self.pos
                     size: self.size
             size_hint: 0.02, 0.03
-            pos_hint: {'top': 0.88, 'x': 0.69}
-
-        Label:
-            canvas:
-                Color:
-                    rgb: 0.8, 0.8, 0.8, 1
-                Rectangle:
-                    pos: self.pos
-                    size: self.size
-            size_hint: 0.02, 0.03
-            pos_hint: {'top': 0.88, 'x': 0.94}
+            pos_hint: {'top': 0.88, 'x': 0.19}
 
         Label:
             canvas:
@@ -828,47 +818,18 @@ WindowManager:
             pos_hint: {'top': 0.95, 'x': 0.69}
             on_text:
                 addproblem.text = func.prepare_data(max_=int(add_max.text), type_='//') if func.custom_max(max_=add_max.text) else func.error_message()
-        
-        Label:
-            text: 'Decimals'
-            size_hint: 0.1, 0.05
-            pos_hint: {'top': 0.89, 'x': 0.04}
-
-        TextInput:
-            id: add_deci
-            multiline: False
-            text: '0'
-            size_hint: 0.3, 0.05
-            pos_hint: {'top': 0.89, 'x': 0.19}
-            on_text: 
-                addproblem.text = func.prepare_data(deci=int(add_deci.text), type_='//') if func.custom_deci(deci=add_deci.text) else func.error_message()
-                integersonly.active = False if func.custom_deci(deci=add_deci.text) and int(add_deci.text) > 0 else integersonly.active 
             
         Label:
             text: 'Negatives'
             size_hint: 0.1, 0.05
-            pos_hint: {'top': 0.89, 'x': 0.54}
+            pos_hint: {'top': 0.89, 'x': 0.04}
 
         CheckBox:
             id: add_negs
             size_hint: 0.02, 0.03
-            pos_hint: {'top': 0.88, 'x': 0.69}
+            pos_hint: {'top': 0.88, 'x': 0.19}
             on_active:
                 addproblem.text = func.prepare_data(neg=add_negs.active, type_='//')
-
-        Label:
-            text: 'Integers Only'
-            size_hint: 0.1, 0.05
-            pos_hint: {'top': 0.89, 'x': 0.79}
-
-        CheckBox:
-            id: integersonly
-            size_hint: 0.02, 0.03
-            pos_hint: {'top': 0.88, 'x': 0.94}
-            active: 'down'
-            on_active:
-                addproblem.text = func.prepare_data(intonly=integersonly.active, type_='//')
-                add_deci.text = '0' if integersonly.active else add_deci.text
         
         Label:
             id: addproblem
@@ -893,12 +854,10 @@ WindowManager:
             size_hint: 0.1, 0.1
             pos_hint: {'x': 0}
             on_release:
-                app.root.current = 'homescreen'
+                app.root.current = 'mulscreen'
                 add_min.text = '0'
                 add_max.text = '100'
-                add_deci.text = '0'
                 add_negs.active = False
-                integersonly.active = True
                 add_answer.text = ''
 
         Button:
@@ -910,12 +869,10 @@ WindowManager:
             size_hint: 0.1, 0.1
             pos_hint: {'x': 0.7}
             on_release:
-                app.root.current = 'addscreen'
+                app.root.current = 'mulscreen'
                 add_min.text = '0'
                 add_max.text = '100'
-                add_deci.text = '0'
                 add_negs.active = False
-                integersonly.active = True
                 add_answer.text = ''
 
         Button:
@@ -927,12 +884,10 @@ WindowManager:
             size_hint: 0.1, 0.1
             pos_hint: {'x': 0.8}
             on_release:
-                app.root.current = 'subscreen'
+                app.root.current = 'mulscreen'
                 add_min.text = '0'
                 add_max.text = '100'
-                add_deci.text = '0'
                 add_negs.active = False
-                integersonly.active = True
                 add_answer.text = ''
 
         Button:
@@ -947,7 +902,5 @@ WindowManager:
                 app.root.current = 'mulscreen'
                 add_min.text = '0'
                 add_max.text = '100'
-                add_deci.text = '0'
                 add_negs.active = False
-                integersonly.active = True
                 add_answer.text = ''

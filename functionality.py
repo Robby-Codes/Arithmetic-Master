@@ -108,25 +108,28 @@ def show_problem(num1, num2, num3, num4, type_):
                 return '   ' + str(num2) + num3 + '\n- ' + str(num1) + num4
     if type_ == '*':
         return '   ' + str(num1) + num3 + '\n* ' + str(num2) + num4
-    if type_ == '//':
-        if num2 == 0 and num4 == '':
-            prepare_data(type_='//')
-        return '   ' + str(num1) + num3 + '\n/ ' + str(num2) + num4
 
 
-def int_only_div_answers(data_set):
+def show_division_problem(data_set):
+    if data_set['max_data'] > 999999:
+        return 'Sorry, try\nlowering the\nMax...'
     num1 = randint(data_set['min_data'], data_set['max_data'])
     num2_list = []
     if num1 == 1 or num1 == 0:
-        num2 = 1
+        return '   ' + str(num1) + '\n/ ' + '1'
     else:
         for i in range(data_set['min_data'], int((num1/2) + 1)):
-            if i != 0 and num1 % i == 0:
+            if i != 0 and i != 1 and num1 % i == 0:
                 num2_list.append(i)
-        num2_list.append(num1)
-        shuffle(num2_list)
-        num2 = num2_list[randint(0, len(num2_list) - 1)]
-    return'   ' + str(num1) + '\n/ ' + str(num2)
+        if len(num2_list) <= 1:
+            num2 = num1
+        else:
+            shuffle(num2_list)
+            num2 = num2_list[randint(0, len(num2_list) - 1)]
+    if data_set['neg_data']:
+        num1 = create_neg(num1)
+        num2 = create_neg(num2)
+    return '   ' + str(num1) + '\n/ ' + str(num2)
 
 
 def form_problem(data_set, type_):
@@ -134,8 +137,8 @@ def form_problem(data_set, type_):
             data_set['max_error'] is True or
             data_set['deci_error'] is True):
         return error_message()
-    if data_set['intonly'] is True and type_ == '//':
-        return int_only_div_answers(data_set)
+    if type_ == '//':
+        return show_division_problem(data_set)
     num1 = randint(data_set['min_data'], data_set['max_data'])
     num2 = randint(data_set['min_data'], data_set['max_data'])
     num3, num4 = '', ''
@@ -149,11 +152,11 @@ def form_problem(data_set, type_):
 
 
 def prepare_data(key=False, min_=None, max_=None,
-                 deci=None, neg=None, intonly=None, type_=None):
+                 deci=None, neg=None, type_=None):
     if key is True:
         data = dict(
             min_data=0, max_data=100, deci_data=0, neg_data=False,
-            intonly=True, min_error=False, max_error=False, deci_error=False)
+            min_error=False, max_error=False, deci_error=False)
         pickle.dump(data, open('storage.dat', 'wb'))
     else:
         data = pickle.load(open('storage.dat', 'rb'))
@@ -165,8 +168,6 @@ def prepare_data(key=False, min_=None, max_=None,
             data['deci_data'] = deci
         if neg is not None:
             data['neg_data'] = neg
-        if intonly is not None:
-            data['intonly'] = intonly
         pickle.dump(data, open('storage.dat', 'wb'))
     return form_problem(data, type_)
 
