@@ -1,6 +1,7 @@
 import pickle
 import re
 from random import randint
+from random import shuffle
 
 
 def error_message():
@@ -115,21 +116,17 @@ def show_problem(num1, num2, num3, num4, type_):
 
 def int_only_div_answers(data_set):
     num1 = randint(data_set['min_data'], data_set['max_data'])
-    while True:
-        try:
-            if num1 == 1 or num1 == 0:
-                num2 = 1
-                break
-            else:
-                num2 = randint(data_set['min_data'], int(num1 / 2))
-                print(num1, num2)
-                if num1 % num2 == 0:
-                    break
-                else:
-                    continue
-        except ZeroDivisionError:
-            continue
-    return '   ' + str(num1) + '\n/ ' + str(num2)
+    num2_list = []
+    if num1 == 1 or num1 == 0:
+        num2 = 1
+    else:
+        for i in range(data_set['min_data'], int((num1/2) + 1)):
+            if i != 0 and num1 % i == 0:
+                num2_list.append(i)
+        num2_list.append(num1)
+        shuffle(num2_list)
+        num2 = num2_list[randint(0, len(num2_list) - 1)]
+    return'   ' + str(num1) + '\n/ ' + str(num2)
 
 
 def form_problem(data_set, type_):
