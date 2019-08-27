@@ -19,7 +19,7 @@ def custom_min(min_):
     try:
         if (re.match(r'^[0-9]+$', min_) and
                 not re.match(r'^0[0-9]+', min_) and
-                int(min_) <= data['max_data']):
+                int(min_) < data['max_data']):
             result = True
     except TypeError:
         result = False
@@ -44,7 +44,7 @@ def custom_max(max_):
     try:
         if (re.match(r'^[0-9]+$', max_) and
                 not re.match(r'^0[0-9]+', max_) and
-                int(max_) >= data['min_data']):
+                int(max_) > data['min_data']):
             result = True
     except TypeError:
         result = False
@@ -108,11 +108,28 @@ def show_problem(num1, num2, num3, num4, type_):
     if type_ == '*':
         return '   ' + str(num1) + num3 + '\n* ' + str(num2) + num4
     if type_ == '//':
+        if num2 == 0 and num4 == '':
+            prepare_data(type_='//')
         return '   ' + str(num1) + num3 + '\n/ ' + str(num2) + num4
 
 
 def int_only_div_answers(data_set):
-    return 'integer only logic in progress'
+    num1 = randint(data_set['min_data'], data_set['max_data'])
+    while True:
+        try:
+            if num1 == 1 or num1 == 0:
+                num2 = 1
+                break
+            else:
+                num2 = randint(data_set['min_data'], int(num1 / 2))
+                print(num1, num2)
+                if num1 % num2 == 0:
+                    break
+                else:
+                    continue
+        except ZeroDivisionError:
+            continue
+    return '   ' + str(num1) + '\n/ ' + str(num2)
 
 
 def form_problem(data_set, type_):

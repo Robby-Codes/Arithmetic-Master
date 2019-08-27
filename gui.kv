@@ -868,7 +868,7 @@ WindowManager:
             active: 'down'
             on_active:
                 addproblem.text = func.prepare_data(intonly=integersonly.active, type_='//')
-                add_deci.text = '0' if integersonly.active == True else add_deci.text
+                add_deci.text = '0' if integersonly.active else add_deci.text
         
         Label:
             id: addproblem
