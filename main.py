@@ -1,6 +1,7 @@
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.core.window import Window
 
 
 class HomeScreen(Screen):
@@ -32,6 +33,7 @@ kv = Builder.load_file('gui.kv')
 
 class ArithmeticMasterApp(App):
     def build(self):
+        self.title = 'Arithmetic Master'
         return kv
 
 
