@@ -1,5 +1,6 @@
 from kivy.app import App
 from kivy.lang import Builder
+from kivy.config import Config
 from kivy.uix.screenmanager import ScreenManager, Screen
 
 
@@ -28,6 +29,8 @@ class WindowManager(ScreenManager):
 
 
 kv = Builder.load_file('gui.kv')
+
+Config.set('input', 'mouse', 'mouse,multitouch_on_demand')
 
 
 class ArithmeticMasterApp(App):
