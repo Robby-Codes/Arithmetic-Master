@@ -3,10 +3,10 @@ This is a graphical user interface designed to allow the user to train their men
 
 ## Tools Used
 ```
-Languages:                  Version Control:
-----------                  ----------------
-Python                      Git/GitHub
-Kivy Language
+Languages:                  GUI Development                  Version Control:
+----------                  ---------------                  ----------------
+Python                      Kivy Language                    Git
+                                                             GitHub
 ```
 
 ## License
