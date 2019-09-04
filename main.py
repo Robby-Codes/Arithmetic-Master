@@ -36,6 +36,7 @@ Config.set('input', 'mouse', 'mouse,multitouch_on_demand')
 class ArithmeticMasterApp(App):
     def build(self):
         self.title = 'Arithmetic Master'
+        self.icon = 'icon.png'
         return kv
 
 
